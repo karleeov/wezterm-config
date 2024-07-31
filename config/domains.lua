@@ -19,16 +19,27 @@ return {
       default_prog = { 'fish', '-l' }, -- Adjust the shell if necessary
     },
     {
-      name = 'WSL:Ubuntu24',
-      distribution = 'Ubuntu-24.04',
+      name = 'WSL:Ubuntu22',
+      distribution = 'Ubuntu-22.04',
       username = 'karleeov', -- Replace with your WSL2 Ubuntu username
       default_cwd = '/home/karleeov', -- Replace with the correct home directory
       default_prog = { 'bash', '-l' }, -- Adjust the shell if necessary
     },
   },
 
-  -- Default to Arch WSL distribution
   default_prog = { 'wsl.exe', '--distribution', 'Arch', '--cd', '~' },
+
+  font = wezterm.font("FiraCode Nerd Font Mono"),
+  font_size = 12,
+  color_scheme = 'Builtin Solarized Dark',
+
+  launch_menu = {
+    {
+      label = 'PowerShell',
+      args = { 'powershell.exe', '-NoLogo' },
+    },
+  },
+
 
   font = wezterm.font("FiraCode Nerd Font Mono"),
   font_size = 12,
@@ -43,14 +54,14 @@ return {
     { action = wezterm.action.ToggleFullScreen, key = 'F11' },
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Ubuntu-24.04'}
+          args = {'wsl', '--distribution', 'Ubuntu-22.04'}
         }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'U' },
+      end), mods = 'CTRL|SHIFT', key = 'W' },
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Arch'}
         }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'A' },
+      end), mods = 'CTRL|SHIFT', key = 'Q' },
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'pwsh-preview'}
