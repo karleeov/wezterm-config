@@ -1,6 +1,8 @@
 local wezterm = require('wezterm')
 local colors = require('colors.custom')
 
+local neon_blue = '#00FFFF'
+
 return {
   animation_fps = 60,
   max_fps = 60,
@@ -8,7 +10,11 @@ return {
   webgpu_power_preference = 'HighPerformance',
 
   -- color scheme
-  colors = colors,
+  color_scheme = 'Cyberpunk',
+  colors = {
+    foreground = neon_blue,
+    background = colors.background,
+  },
 
   -- background
   background = {
@@ -20,16 +26,16 @@ return {
       source = { Color = colors.background },
       height = '100%',
       width = '100%',
-      opacity = 0.8,
+      opacity = 0.9,
     },
   },
 
   -- scrollbar
-  enable_scroll_bar = true,
+  enable_scroll_bar = false, -- Set to false for performance
 
   -- tab bar
-  enable_tab_bar = true,
-  hide_tab_bar_if_only_one_tab = false,
+  enable_tab_bar = true, -- Set to false if you don't need tabs often
+  hide_tab_bar_if_only_one_tab = true, -- Only show when multiple tabs are open
   use_fancy_tab_bar = false,
   tab_max_width = 25,
   show_tab_index_in_tab_bar = false,
@@ -64,7 +70,7 @@ return {
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Ubuntu-24.04'}
         }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'U' },
+      end), mods = 'CTRL|SHIFT', key = 'O' },
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Arch'}
@@ -80,5 +86,7 @@ return {
           args = {'pwsh-preview'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'P' },
+    { action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '-' },
+    { action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '|' },
   },
 }
