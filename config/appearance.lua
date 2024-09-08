@@ -63,30 +63,37 @@ return {
     { action = wezterm.action.PasteFrom 'Clipboard', mods = 'CTRL', key = 'V' },
     { action = wezterm.action.DecreaseFontSize, mods = 'CTRL', key = '-' },
     { action = wezterm.action.IncreaseFontSize, mods = 'CTRL', key = '=' },
-    { action = wezterm.action.Nop, mods = 'ALT', key = 'Enter' },
     { action = wezterm.action.ResetFontSize, mods = 'CTRL', key = '0' },
     { action = wezterm.action.ToggleFullScreen, key = 'F11' },
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Ubuntu-24.04'}
-        }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'O' },
+
+    -- Duplicating Arch terminal in a new tab
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Arch'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'A' },
+
+    -- Split pane commands
+    { action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '-' },
+    { action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '|' },
+
+    -- Commands to open other distributions
+    { action = wezterm.action_callback(function(window, pane)
+        window:perform_action(wezterm.action.SpawnCommandInNewTab {
+          args = {'wsl', '--distribution', 'Ubuntu-24.04'}
+        }, pane)
+      end), mods = 'CTRL|SHIFT', key = 'O' },
+    
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Debian'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'D' },
+
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'pwsh-preview'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'P' },
-    { action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '-' },
-    { action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '|' },
   },
 }
