@@ -4,7 +4,6 @@ local colors = require('colors.custom')
 local neon_blue = '#00FFFF'
 
 return {
-<<<<<<< HEAD
   wsl_domains = {
     {
       name = 'WSL:Arch',
@@ -19,7 +18,9 @@ return {
       username = 'karleeov',
       default_cwd = '/home/karleeov',
       default_prog = { 'bash', '-l' },
-=======
+    },  -- Closing bracket added here
+  },
+
   animation_fps = 60,
   max_fps = 60,
   front_end = 'WebGpu',
@@ -43,7 +44,6 @@ return {
       height = '100%',
       width = '100%',
       opacity = 0.9,
->>>>>>> refs/remotes/origin/master
     },
   },
 
@@ -74,10 +74,7 @@ return {
     brightness = 0.65,
   },
 
-<<<<<<< HEAD
-=======
   -- Key bindings
->>>>>>> refs/remotes/origin/master
   keys = {
     { action = wezterm.action.CopyTo 'Clipboard', mods = 'CTRL', key = 'C' },
     { action = wezterm.action.PasteFrom 'Clipboard', mods = 'CTRL', key = 'V' },
@@ -85,55 +82,25 @@ return {
     { action = wezterm.action.IncreaseFontSize, mods = 'CTRL', key = '=' },
     { action = wezterm.action.ResetFontSize, mods = 'CTRL', key = '0' },
     { action = wezterm.action.ToggleFullScreen, key = 'F11' },
-<<<<<<< HEAD
-    
-    -- New shortcut for splitting the tab horizontally
-    { action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" }, mods = 'CTRL', key = '-' },
-    
+
     -- New shortcut for splitting the tab vertically
     { action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" }, mods = 'CTRL', key = '|' },
 
-    -- New shortcut for opening a new tab for Arch
-=======
-
     -- Duplicating Arch terminal in a new tab
->>>>>>> refs/remotes/origin/master
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Arch'}
         }, pane)
-<<<<<<< HEAD
       end), mods = 'CTRL|SHIFT', key = 'A' },
-    
+
     -- New shortcut for opening a new tab for Ubuntu
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'wsl', '--distribution', 'Ubuntu-22.04'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'W' },
-    
+
     -- New shortcut for opening a new tab for PowerShell
-=======
-      end), mods = 'CTRL', key = 'A' },
-
-    -- Split pane commands
-    { action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, mods = 'CTRL', key = '-' },
-    { action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, mods = 'CTRL', key = '|' },
-
-    -- Commands to open other distributions
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Ubuntu-24.04'}
-        }, pane)
-      end), mods = 'CTRL', key = 'O' },
-    
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Debian'}
-        }, pane)
-      end), mods = 'CTRL', key = 'D' },
-
->>>>>>> refs/remotes/origin/master
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
           args = {'pwsh-preview'}
