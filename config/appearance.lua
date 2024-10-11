@@ -1,7 +1,8 @@
 local wezterm = require('wezterm')
 local colors = require('colors.custom')
 
-local neon_blue = '#00FFFF'
+-- Remove this line as we'll be using the new color scheme
+-- local neon_blue = '#00FFFF'
 
 return {
   animation_fps = 60,
@@ -9,11 +10,97 @@ return {
   front_end = 'WebGpu',
   webgpu_power_preference = 'HighPerformance',
 
-  -- Color scheme
-  color_scheme = 'Cyberpunk',
+  -- Remove the color_scheme line as we're defining our own colors
+  -- color_scheme = 'Cyberpunk',
+  
+  -- Apply the new color scheme
   colors = {
-    foreground = neon_blue,
-    background = '#000000',  -- Dark background for cyberpunk aesthetic
+    -- The default text color
+    foreground = 'silver',
+    -- The default background color
+    background = 'black',
+
+    cursor_bg = '#52ad70',
+    cursor_fg = 'black',
+    cursor_border = '#52ad70',
+
+    selection_fg = 'black',
+    selection_bg = '#fffacd',
+
+    scrollbar_thumb = '#222222',
+
+    split = '#444444',
+
+    ansi = {
+      'black',
+      'maroon',
+      'green',
+      'olive',
+      'navy',
+      'purple',
+      'teal',
+      'silver',
+    },
+    brights = {
+      'grey',
+      'red',
+      'lime',
+      'yellow',
+      'blue',
+      'fuchsia',
+      'aqua',
+      'white',
+    },
+
+    indexed = { [136] = '#af8700' },
+
+    compose_cursor = 'orange',
+
+    copy_mode_active_highlight_bg = { Color = '#000000' },
+    copy_mode_active_highlight_fg = { AnsiColor = 'Black' },
+    copy_mode_inactive_highlight_bg = { Color = '#52ad70' },
+    copy_mode_inactive_highlight_fg = { AnsiColor = 'White' },
+
+    quick_select_label_bg = { Color = 'peru' },
+    quick_select_label_fg = { Color = '#ffffff' },
+    quick_select_match_bg = { AnsiColor = 'Navy' },
+    quick_select_match_fg = { Color = '#ffffff' },
+
+    -- Add the new tab bar color settings
+    tab_bar = {
+      background = '#0b0022',
+
+      active_tab = {
+        bg_color = '#2b2042',
+        fg_color = '#c0c0c0',
+        intensity = 'Normal',
+        underline = 'None',
+        italic = false,
+        strikethrough = false,
+      },
+
+      inactive_tab = {
+        bg_color = '#1b1032',
+        fg_color = '#808080',
+      },
+
+      inactive_tab_hover = {
+        bg_color = '#3b3052',
+        fg_color = '#909090',
+        italic = true,
+      },
+
+      new_tab = {
+        bg_color = '#1b1032',
+        fg_color = '#808080',
+      },
+
+      new_tab_hover = {
+        bg_color = '#3b3052',
+        fg_color = '#909090',
+        italic = true,
+      },
+    },
   },
 
   -- Background settings
@@ -23,7 +110,7 @@ return {
       horizontal_align = 'Center',
     },
     {
-      source = { Color = '#000000' },  -- Consistent dark background color
+      source = { Color = '#000000' },  -- Consistent with the new background color
       height = '100%',
       width = '100%',
       opacity = 0.9,
@@ -86,7 +173,7 @@ return {
     
     { action = wezterm.action_callback(function(window, pane)
         window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Debian'}
+          args = {'wsl', '--distribution', 'Arch'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'D' },
 
