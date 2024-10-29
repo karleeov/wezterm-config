@@ -106,8 +106,9 @@ return {
   -- Background settings
   background = {
     {
-      source = { File = wezterm.GLOBAL.background },
-      horizontal_align = 'Center',
+      source = { File = wezterm.home_dir .. "/path/to/cyberpunk-bg.jpg" },
+      opacity = 0.15,
+      hsb = { brightness = 0.3 },
     },
     {
       source = { Color = '#000000' },  -- Consistent with the new background color
@@ -140,8 +141,8 @@ return {
     active_titlebar_bg = '#090909',  -- Dark title bar for a sleek look
   },
   inactive_pane_hsb = {
-    saturation = 0.9,
-    brightness = 0.65,
+    saturation = 0.8,
+    brightness = 0.7,
   },
 
   -- Key bindings
@@ -183,4 +184,56 @@ return {
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'P' },
   },
+
+  -- Add these new settings
+  window_background_opacity = 0.95,
+  text_background_opacity = 0.95,
+  
+  -- Add window decorations
+  window_decorations = "RESIZE",
+  
+  -- Add a cool font (install this font first)
+  font = wezterm.font_with_fallback({
+    { family = "JetBrainsMono Nerd Font", weight = "Medium" },
+    { family = "Fira Code", weight = "Medium" },
+  }),
+  font_size = 11,
+  
+  -- Add some cool effects
+  window_frame = {
+    active_titlebar_bg = '#0a0a12',
+    inactive_titlebar_bg = '#0a0a12',
+    font = wezterm.font({ family = "JetBrainsMono Nerd Font", weight = "Bold" }),
+    font_size = 10,
+  },
+  
+  -- Add a cool cursor style
+  default_cursor_style = 'BlinkingBlock',
+  cursor_blink_rate = 500,
+  
+  -- Add visual bell effect
+  visual_bell = {
+    fade_in_duration_ms = 75,
+    fade_out_duration_ms = 75,
+    target = 'CursorColor',
+  },
+
+  tab_bar_style = {
+    new_tab = ' + ',
+    active_tab_left = ' ',
+    active_tab_right = ' ',
+    inactive_tab_left = ' ',
+    inactive_tab_right = ' ',
+  },
+
+  -- Add this to create a startup animation effect
+  window_padding = {
+    left = "1cell",
+    right = "1cell",
+    top = "0.5cell",
+    bottom = "0.5cell",
+  },
+
+  initial_rows = 24,
+  initial_cols = 80,
 }
