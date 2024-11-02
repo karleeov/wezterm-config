@@ -16,40 +16,40 @@ return {
   -- Apply the new color scheme
   colors = {
     -- The default text color
-    foreground = 'silver',
+    foreground = '#00ff9f',
     -- The default background color
-    background = 'black',
+    background = '#000b1e',
 
-    cursor_bg = '#52ad70',
-    cursor_fg = 'black',
-    cursor_border = '#52ad70',
+    cursor_bg = '#ff00ff',
+    cursor_fg = '#000000',
+    cursor_border = '#ff00ff',
 
-    selection_fg = 'black',
-    selection_bg = '#fffacd',
+    selection_fg = '#000000',
+    selection_bg = '#00ffff',
 
     scrollbar_thumb = '#222222',
 
     split = '#444444',
 
     ansi = {
-      'black',
-      'maroon',
-      'green',
-      'olive',
-      'navy',
-      'purple',
-      'teal',
-      'silver',
+      '#000000',
+      '#ff0055',
+      '#00ff9f',
+      '#ff00ff',
+      '#00b8ff',
+      '#bd00ff',
+      '#00ffff',
+      '#ffffff',
     },
     brights = {
-      'grey',
-      'red',
-      'lime',
-      'yellow',
-      'blue',
-      'fuchsia',
-      'aqua',
-      'white',
+      '#001eff',
+      '#ff1177',
+      '#00ffaa',
+      '#ff00ff',
+      '#00ffff',
+      '#d600ff',
+      '#00ffff',
+      '#ffffff',
     },
 
     indexed = { [136] = '#af8700' },
@@ -68,36 +68,36 @@ return {
 
     -- Add the new tab bar color settings
     tab_bar = {
-      background = '#0b0022',
+      background = '#000000',
 
       active_tab = {
-        bg_color = '#2b2042',
-        fg_color = '#c0c0c0',
-        intensity = 'Normal',
+        bg_color = '#00ff9f',
+        fg_color = '#000000',
+        intensity = 'Bold',
         underline = 'None',
         italic = false,
         strikethrough = false,
       },
 
       inactive_tab = {
-        bg_color = '#1b1032',
-        fg_color = '#808080',
+        bg_color = '#000b1e',
+        fg_color = '#00b8ff',
       },
 
       inactive_tab_hover = {
-        bg_color = '#3b3052',
-        fg_color = '#909090',
+        bg_color = '#002244',
+        fg_color = '#00ffff',
         italic = true,
       },
 
       new_tab = {
-        bg_color = '#1b1032',
-        fg_color = '#808080',
+        bg_color = '#000b1e',
+        fg_color = '#ff00ff',
       },
 
       new_tab_hover = {
-        bg_color = '#3b3052',
-        fg_color = '#909090',
+        bg_color = '#002244',
+        fg_color = '#00ffff',
         italic = true,
       },
     },
@@ -106,15 +106,10 @@ return {
   -- Background settings
   background = {
     {
-      source = { File = wezterm.home_dir .. "/path/to/cyberpunk-bg.jpg" },
-      opacity = 0.15,
-      hsb = { brightness = 0.3 },
-    },
-    {
-      source = { Color = '#000000' },  -- Consistent with the new background color
+      source = { Color = '#000b1e' },
       height = '100%',
       width = '100%',
-      opacity = 0.9,
+      opacity = 0.95,
     },
   },
 
@@ -138,7 +133,10 @@ return {
   },
   window_close_confirmation = 'NeverPrompt',
   window_frame = {
-    active_titlebar_bg = '#090909',  -- Dark title bar for a sleek look
+    active_titlebar_bg = '#000b1e',
+    inactive_titlebar_bg = '#000000',
+    font = wezterm.font({ family = "JetBrainsMono Nerd Font", weight = "Bold" }),
+    font_size = 10,
   },
   inactive_pane_hsb = {
     saturation = 0.8,
@@ -187,7 +185,7 @@ return {
 
   -- Add these new settings
   window_background_opacity = 0.95,
-  text_background_opacity = 0.95,
+  text_background_opacity = 0.9,
   
   -- Add window decorations
   window_decorations = "RESIZE",
