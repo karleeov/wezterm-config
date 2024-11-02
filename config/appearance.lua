@@ -218,14 +218,6 @@ return {
     target = 'CursorColor',
   },
 
-  tab_bar_style = {
-    new_tab = ' + ',
-    active_tab_left = ' ',
-    active_tab_right = ' ',
-    inactive_tab_left = ' ',
-    inactive_tab_right = ' ',
-  },
-
   -- Add this to create a startup animation effect
   window_padding = {
     left = "1cell",
@@ -236,4 +228,16 @@ return {
 
   initial_rows = 24,
   initial_cols = 80,
+
+  -- Replace the tab_bar_style block with this simpler version:
+  tab_bar_style = {
+    new_tab = wezterm.format({
+      { Text = " + " },
+    }),
+  },
+
+  -- Move these settings outside of tab_bar_style as they are top-level config options
+  tab_max_width = 25,
+  show_tab_index_in_tab_bar = false,
+  hide_tab_bar_if_only_one_tab = true,
 }
