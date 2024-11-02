@@ -18,7 +18,7 @@ return {
       username = 'karleeov',
       default_cwd = '/home/karleeov',
       default_prog = { 'bash', '-l' },
-    },  -- Closing bracket added here
+    },
   },
 
   animation_fps = 60,
