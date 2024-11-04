@@ -181,6 +181,8 @@ return {
           args = {'pwsh-preview'}
         }, pane)
       end), mods = 'CTRL|SHIFT', key = 'P' },
+
+    { action = wezterm.action.CloseCurrentTab { confirm = false }, mods = 'CTRL', key = 'W' },
   },
 
   -- Add these new settings
