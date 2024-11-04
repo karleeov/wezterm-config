@@ -31,21 +31,11 @@ local keys = {
    {
       key = 'u',
       mods = mod.SUPER,
-      action = wezterm.action.QuickSelectArgs({
-         label = 'open url',
-         patterns = {
-            '\\((https?://\\S+)\\)',
-            '\\[(https?://\\S+)\\]',
-            '\\{(https?://\\S+)\\}',
-            '<(https?://\\S+)>',
-            '\\bhttps?://\\S+[)/a-zA-Z0-9-]+'
-         },
-         action = wezterm.action_callback(function(window, pane)
-            local url = window:get_selection_text_for_pane(pane)
-            wezterm.log_info('opening: ' .. url)
-            wezterm.open_with(url)
-         end),
-      }),
+      action = wezterm.action_callback(function(window, pane)
+         local url = window:get_selection_text_for_pane(pane)
+         wezterm.log_info('opening: ' .. url)
+         wezterm.open_with(url)
+      end),
    },
 
    -- cursor movement --
@@ -159,7 +149,109 @@ local keys = {
          timemout_miliseconds = 1000,
       }),
    },
+
+   -- Add these to your key bindings
+   { 
+      key = 'F6', 
+      mods = 'SHIFT',
+      action = wezterm.action.EmitEvent('toggle-opacity'),
+   },
+   { 
+      key = 'L', 
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action.ActivateCommandPalette,
+   },
 }
+
+-- Add these WSL-specific key bindings
+local wsl_keys = {
+   -- Quick access to common WSL locations
+   { 
+      key = 'H',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(function(window, pane)
+         window:perform_action(
+            wezterm.action.SendString('cd ~\n'),
+            pane
+         )
+      end)
+   },
+   { 
+      key = 'E',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(function(window, pane)
+         window:perform_action(
+            wezterm.action.SendString('cd /mnt/c\n'),
+            pane
+         )
+      end)
+   },
+   
+   -- Quick system commands
+   { 
+      key = 'U',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(function(window, pane)
+         window:perform_action(
+            wezterm.action.SendString('yay -Syu\n'),
+            pane
+         )
+      end)
+   },
+   
+   -- Launch common tools
+   { 
+      key = 'M',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(function(window, pane)
+         window:perform_action(
+            wezterm.action.SendString('btop\n'),
+            pane
+         )
+      end)
+   },
+}
+
+-- Add these to your existing keys table
+for _, key in ipairs(wsl_keys) do
+   table.insert(keys, key)
+end
+
+-- Add to your existing keys table
+local tab_search_keys = {
+    -- Quick tab finder
+    {
+        key = 'T',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.ShowTabNavigator
+    },
+    
+    -- Tab organization shortcuts
+    {
+        key = 'G',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action_callback(function(window, pane)
+            -- Show tab grouping menu
+            window:perform_action(
+                wezterm.action.PromptInputLine {
+                    description = 'Enter group name for current tab:',
+                    action = wezterm.action_callback(function(window, pane, line)
+                        if line then
+                            -- Store group name in tab's user_vars
+                            window:active_tab():set_title(line .. ': ' .. window:active_tab():get_title())
+                        end
+                    end),
+                },
+                pane
+            )
+        end)
+    },
+}
+
+-- Add these to your existing keys table
+for _, key in ipairs(tab_search_keys) do
+    table.insert(keys, key)
+end
 
 -- stylua: ignore
 local key_tables = {

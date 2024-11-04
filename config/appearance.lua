@@ -4,6 +4,33 @@ local colors = require('colors.custom')
 -- Remove this line as we'll be using the new color scheme
 -- local neon_blue = '#00FFFF'
 
+-- Add to your existing configuration
+local accessibility = {
+    -- High contrast mode
+    high_contrast = false,
+    
+    -- Larger default font size for better readability
+    font_size = 12,
+    
+    -- Enable font ligatures for better readability
+    harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' },
+    
+    -- Animation settings for reduced motion
+    animation_fps = 1,
+    
+    -- Cursor settings for visibility
+    cursor_blink_rate = 800,
+    cursor_thickness = 2,
+}
+
+-- Add accessibility toggles
+wezterm.on('user-var-changed', function(window, pane, name, value)
+    if name == "high_contrast" then
+        local scheme = value == "true" and "High Contrast" or "Custom"
+        window:set_color_scheme(scheme)
+    end
+end)
+
 return {
   animation_fps = 60,
   max_fps = 60,
@@ -99,6 +126,38 @@ return {
         bg_color = '#002244',
         fg_color = '#00ffff',
         italic = true,
+      },
+    },
+  },
+
+  -- Add a separate high contrast color scheme that can be switched to
+  color_schemes = {
+    ['High Contrast'] = {
+      foreground = '#ffffff',
+      background = '#000000',
+      cursor_bg = '#ffffff',
+      cursor_fg = '#000000',
+      
+      -- Add required ANSI colors for high contrast mode
+      ansi = {
+        '#000000', -- black
+        '#ff0000', -- red
+        '#00ff00', -- green
+        '#ffff00', -- yellow
+        '#0000ff', -- blue
+        '#ff00ff', -- magenta
+        '#00ffff', -- cyan
+        '#ffffff', -- white
+      },
+      brights = {
+        '#000000', -- bright black
+        '#ff0000', -- bright red
+        '#00ff00', -- bright green
+        '#ffff00', -- bright yellow
+        '#0000ff', -- bright blue
+        '#ff00ff', -- bright magenta
+        '#00ffff', -- bright cyan
+        '#ffffff', -- bright white
       },
     },
   },
@@ -240,4 +299,10 @@ return {
   tab_max_width = 25,
   show_tab_index_in_tab_bar = false,
   hide_tab_bar_if_only_one_tab = false,
+
+  -- Add accessibility settings
+  font_size = accessibility.font_size,
+  harfbuzz_features = accessibility.harfbuzz_features,
+  animation_fps = accessibility.animation_fps,
+  cursor_blink_rate = accessibility.cursor_blink_rate,
 }
