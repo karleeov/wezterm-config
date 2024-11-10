@@ -1,35 +1,4 @@
 local wezterm = require('wezterm')
-local colors = require('colors.custom')
-
--- Remove this line as we'll be using the new color scheme
--- local neon_blue = '#00FFFF'
-
--- Add to your existing configuration
-local accessibility = {
-    -- High contrast mode
-    high_contrast = false,
-    
-    -- Larger default font size for better readability
-    font_size = 12,
-    
-    -- Enable font ligatures for better readability
-    harfbuzz_features = { 'calt=1', 'clig=1', 'liga=1' },
-    
-    -- Animation settings for reduced motion
-    animation_fps = 1,
-    
-    -- Cursor settings for visibility
-    cursor_blink_rate = 800,
-    cursor_thickness = 2,
-}
-
--- Add accessibility toggles
-wezterm.on('user-var-changed', function(window, pane, name, value)
-    if name == "high_contrast" then
-        local scheme = value == "true" and "High Contrast" or "Custom"
-        window:set_color_scheme(scheme)
-    end
-end)
 
 return {
   animation_fps = 60,
@@ -37,46 +6,41 @@ return {
   front_end = 'WebGpu',
   webgpu_power_preference = 'HighPerformance',
 
-  -- Remove the color_scheme line as we're defining our own colors
-  -- color_scheme = 'Cyberpunk',
-  
-  -- Apply the new color scheme
+  -- Apply the cyberpunk color scheme
   colors = {
-    -- The default text color
-    foreground = '#00ff9f',
-    -- The default background color
-    background = '#000b1e',
+    foreground = '#00ff9f',  -- Neon green
+    background = '#0d0d1f',  -- Dark blue-black
 
-    cursor_bg = '#ff00ff',
+    cursor_bg = '#ff00ff',  -- Neon pink
     cursor_fg = '#000000',
     cursor_border = '#ff00ff',
 
     selection_fg = '#000000',
-    selection_bg = '#00ffff',
+    selection_bg = '#00ffff',  -- Neon cyan
 
     scrollbar_thumb = '#222222',
 
     split = '#444444',
 
     ansi = {
-      '#000000',
-      '#ff0055',
-      '#00ff9f',
-      '#ff00ff',
-      '#00b8ff',
-      '#bd00ff',
-      '#00ffff',
-      '#ffffff',
+      '#000000',  -- black
+      '#ff0055',  -- red
+      '#00ff9f',  -- green
+      '#ff00ff',  -- magenta
+      '#00b8ff',  -- blue
+      '#bd00ff',  -- purple
+      '#00ffff',  -- cyan
+      '#ffffff',  -- white
     },
     brights = {
-      '#001eff',
-      '#ff1177',
-      '#00ffaa',
-      '#ff00ff',
-      '#00ffff',
-      '#d600ff',
-      '#00ffff',
-      '#ffffff',
+      '#001eff',  -- bright black
+      '#ff1177',  -- bright red
+      '#00ffaa',  -- bright green
+      '#ff00ff',  -- bright magenta
+      '#00ffff',  -- bright blue
+      '#d600ff',  -- bright purple
+      '#00ffff',  -- bright cyan
+      '#ffffff',  -- bright white
     },
 
     indexed = { [136] = '#af8700' },
@@ -93,13 +57,13 @@ return {
     quick_select_match_bg = { AnsiColor = 'Navy' },
     quick_select_match_fg = { Color = '#ffffff' },
 
-    -- Add the new tab bar color settings
+    -- Tab bar settings
     tab_bar = {
-      background = '#000000',
+      background = '#0d0d1f',
 
       active_tab = {
         bg_color = '#00ff9f',
-        fg_color = '#000000',
+        fg_color = '#0d0d1f',
         intensity = 'Bold',
         underline = 'None',
         italic = false,
@@ -107,7 +71,7 @@ return {
       },
 
       inactive_tab = {
-        bg_color = '#000b1e',
+        bg_color = '#0d0d1f',
         fg_color = '#00b8ff',
       },
 
@@ -118,7 +82,7 @@ return {
       },
 
       new_tab = {
-        bg_color = '#000b1e',
+        bg_color = '#0d0d1f',
         fg_color = '#ff00ff',
       },
 
@@ -130,42 +94,10 @@ return {
     },
   },
 
-  -- Add a separate high contrast color scheme that can be switched to
-  color_schemes = {
-    ['High Contrast'] = {
-      foreground = '#ffffff',
-      background = '#000000',
-      cursor_bg = '#ffffff',
-      cursor_fg = '#000000',
-      
-      -- Add required ANSI colors for high contrast mode
-      ansi = {
-        '#000000', -- black
-        '#ff0000', -- red
-        '#00ff00', -- green
-        '#ffff00', -- yellow
-        '#0000ff', -- blue
-        '#ff00ff', -- magenta
-        '#00ffff', -- cyan
-        '#ffffff', -- white
-      },
-      brights = {
-        '#000000', -- bright black
-        '#ff0000', -- bright red
-        '#00ff00', -- bright green
-        '#ffff00', -- bright yellow
-        '#0000ff', -- bright blue
-        '#ff00ff', -- bright magenta
-        '#00ffff', -- bright cyan
-        '#ffffff', -- bright white
-      },
-    },
-  },
-
   -- Background settings
   background = {
     {
-      source = { Color = '#000b1e' },
+      source = { Color = '#0d0d1f' },
       height = '100%',
       width = '100%',
       opacity = 0.95,
@@ -192,8 +124,8 @@ return {
   },
   window_close_confirmation = 'NeverPrompt',
   window_frame = {
-    active_titlebar_bg = '#000b1e',
-    inactive_titlebar_bg = '#000000',
+    active_titlebar_bg = '#0d0d1f',
+    inactive_titlebar_bg = '#0a0a12',
     font = wezterm.font({ family = "JetBrainsMono Nerd Font", weight = "Bold" }),
     font_size = 10,
   },
@@ -210,38 +142,6 @@ return {
     { action = wezterm.action.IncreaseFontSize, mods = 'CTRL', key = '=' },
     { action = wezterm.action.ResetFontSize, mods = 'CTRL', key = '0' },
     { action = wezterm.action.ToggleFullScreen, key = 'F11' },
-
-    -- Duplicating Arch terminal in a new tab
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Arch'}
-        }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'A' },
-
-    -- Split pane commands
-    { action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '-' },
-    { action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '|' },
-
-    -- Commands to open other distributions
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Ubuntu-24.04'}
-        }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'O' },
-    
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'wsl', '--distribution', 'Arch'}
-        }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'D' },
-
-    { action = wezterm.action_callback(function(window, pane)
-        window:perform_action(wezterm.action.SpawnCommandInNewTab {
-          args = {'pwsh-preview'}
-        }, pane)
-      end), mods = 'CTRL|SHIFT', key = 'P' },
-
-    { action = wezterm.action.CloseCurrentTab { confirm = false }, mods = 'CTRL', key = 'W' },
   },
 
   -- Add these new settings
@@ -299,10 +199,4 @@ return {
   tab_max_width = 25,
   show_tab_index_in_tab_bar = false,
   hide_tab_bar_if_only_one_tab = false,
-
-  -- Add accessibility settings
-  font_size = accessibility.font_size,
-  harfbuzz_features = accessibility.harfbuzz_features,
-  animation_fps = accessibility.animation_fps,
-  cursor_blink_rate = accessibility.cursor_blink_rate,
 }
