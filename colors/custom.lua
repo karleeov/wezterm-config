@@ -1,98 +1,78 @@
 -- A slightly altered version of catppucchin mocha
-local mocha = {
-   rosewater = '#f5e0dc',
-   flamingo = '#f2cdcd',
-   pink = '#f5c2e7',
-   mauve = '#cba6f7',
-   red = '#f38ba8',
-   maroon = '#eba0ac',
-   peach = '#fab387',
-   yellow = '#f9e2af',
-   green = '#a6e3a1',
-   teal = '#94e2d5',
-   sky = '#89dceb',
-   sapphire = '#74c7ec',
-   blue = '#89b4fa',
-   lavender = '#b4befe',
-   text = '#cdd6f4',
-   subtext1 = '#bac2de',
-   subtext0 = '#a6adc8',
-   overlay2 = '#9399b2',
-   overlay1 = '#7f849c',
-   overlay0 = '#6c7086',
-   surface2 = '#585b70',
-   surface1 = '#45475a',
-   surface0 = '#313244',
-   base = '#1f1f28',
-   mantle = '#181825',
-   crust = '#11111b',
+local cyberpunk = {
+   neon_green = '#00ff9f',
+   neon_pink = '#ff00ff',
+   neon_blue = '#00b8ff',
+   neon_cyan = '#00ffff',
+   dark_background = '#0d0d1f',
+   bright_white = '#ffffff',
+   dark_grey = '#313244',
 }
 
 -- Wrap everything in a colors table
 return {
    colors = {
-      foreground = mocha.text,
-      background = mocha.base,
-      cursor_bg = mocha.rosewater,
-      cursor_border = mocha.rosewater,
-      cursor_fg = mocha.crust,
+      foreground = cyberpunk.neon_green,
+      background = cyberpunk.dark_background,
+      cursor_bg = cyberpunk.neon_pink,
+      cursor_border = cyberpunk.neon_pink,
+      cursor_fg = cyberpunk.dark_background,
       
       -- Make sure these are the only selection-related fields
-      selection_bg = mocha.surface2,
-      selection_fg = mocha.text,
+      selection_bg = cyberpunk.neon_cyan,
+      selection_fg = cyberpunk.dark_background,
       
       ansi = {
-         '#0C0C0C', -- black
-         '#C50F1F', -- red
-         '#13A10E', -- green
-         '#C19C00', -- yellow
-         '#0037DA', -- blue
-         '#881798', -- magenta/purple
-         '#3A96DD', -- cyan
-         '#CCCCCC', -- white
+         '#000000', -- black
+         '#ff0055', -- red
+         cyberpunk.neon_green, -- green
+         '#ff00ff', -- yellow (using pink)
+         cyberpunk.neon_blue, -- blue
+         '#bd00ff', -- magenta
+         cyberpunk.neon_cyan, -- cyan
+         cyberpunk.bright_white, -- white
       },
       brights = {
-         '#767676', -- black
-         '#E74856', -- red
-         '#16C60C', -- green
-         '#F9F1A5', -- yellow
-         '#3B78FF', -- blue
-         '#B4009E', -- magenta/purple
-         '#61D6D6', -- cyan
-         '#F2F2F2', -- white
+         '#001eff', -- bright black (dark blue)
+         '#ff1177', -- bright red
+         '#00ffaa', -- bright green
+         '#ff00ff', -- bright yellow (pink)
+         cyberpunk.neon_cyan, -- bright blue
+         '#d600ff', -- bright magenta
+         cyberpunk.neon_cyan, -- bright cyan
+         cyberpunk.bright_white, -- bright white
       },
       
       tab_bar = {
-         background = 'rgba(0, 0, 0, 0.4)',
+         background = cyberpunk.dark_background,
          active_tab = {
-            bg_color = mocha.surface2,
-            fg_color = mocha.text,
+            bg_color = cyberpunk.neon_green,
+            fg_color = cyberpunk.dark_background,
          },
          inactive_tab = {
-            bg_color = mocha.surface0,
-            fg_color = mocha.subtext1,
+            bg_color = cyberpunk.dark_grey,
+            fg_color = cyberpunk.neon_blue,
          },
          inactive_tab_hover = {
-            bg_color = mocha.surface0,
-            fg_color = mocha.text,
+            bg_color = '#002244',
+            fg_color = cyberpunk.neon_cyan,
          },
          new_tab = {
-            bg_color = mocha.base,
-            fg_color = mocha.text,
+            bg_color = cyberpunk.dark_background,
+            fg_color = cyberpunk.neon_pink,
          },
          new_tab_hover = {
-            bg_color = mocha.mantle,
-            fg_color = mocha.text,
-            italic = true,
+            bg_color = '#002244',
+            fg_color = cyberpunk.neon_cyan,
          },
       },
       
-      visual_bell = mocha.surface0,
+      visual_bell = cyberpunk.dark_grey,
       indexed = {
-         [16] = mocha.peach,
-         [17] = mocha.rosewater,
+         [16] = '#ff8800', -- orange
+         [17] = cyberpunk.neon_pink,
       },
-      scrollbar_thumb = mocha.surface2,
-      split = mocha.overlay0,
+      scrollbar_thumb = cyberpunk.dark_grey,
+      split = '#444444',
    }
 }
