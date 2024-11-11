@@ -1,17 +1,36 @@
-local Config = require('config')
+local wezterm = require('wezterm')
+local config = wezterm.config_builder()
 
-require('utils.backdrops'):set_files():random()
+-- Enable configuration reloading
+wezterm.on('gui-startup', function(cmd)
+  local tab, pane, window = wezterm.mux.spawn_window({
+    args = { 'wsl', '--distribution', 'Arch' }
+  })
+  window:gui_window():maximize()
+end)
 
-require('events.right-status').setup()
-require('events.left-status').setup()
-require('events.tab-title').setup()
-require('events.new-tab-button').setup()
-require('events.status-bar')
+-- Load your config files
+local config_files = {
+  'config/domains',
+  'config/appearance',
+  'colors/custom',
+}
 
-return Config:init()
-   :append(require('config.appearance'))
-   :append(require('config.bindings'))
-   :append(require('config.domains'))
-   :append(require('config.fonts'))
-   :append(require('config.general'))
-   :append(require('config.launch')).options
+-- Merge all configurations
+for _, file in ipairs(config_files) do
+  local ok, module = pcall(require, file)
+  if ok then
+    for k, v in pairs(module) do
+      if k == 'colors' then
+        -- Special handling for colors to ensure proper merging
+        config.colors = v
+      else
+        config[k] = v
+      end
+    end
+  else
+    wezterm.log_error('Failed to load ' .. file .. ': ' .. tostring(module))
+  end
+end
+
+return config
