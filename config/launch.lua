@@ -17,7 +17,7 @@ if platform.is_win then
       { label = 'Nushell', args = { 'nu' } },
       {
          label = 'Git Bash',
-         args = { 'C:\\Users\\kevin\\scoop\\apps\\git\\current\\bin\\bash.exe' },
+         args = { 'C:\\Users\\li_sz\\scoop\\apps\\git\\current\\bin\\bash.exe' },
       },
       {
          label = "Matrix Effect",
@@ -60,7 +60,7 @@ if platform.is_win then
          distribution = 'Arch',
          username = 'karleeov',  -- Replace with your actual username
          default_cwd = '/mnt/c/Users/li_sz',  -- Set the default directory for Arch
-         default_prog = { 'fish', '-l' },  -- Default shell for Arch
+         default_prog = { 'zsh', '-l' },  -- Default shell for Arch
       },
    }
 elseif platform.is_mac then

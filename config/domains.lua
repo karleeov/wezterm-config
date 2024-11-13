@@ -2,35 +2,27 @@ local wezterm = require('wezterm')
 local config = wezterm.config_builder()
 local colors = require('colors.custom')
 
--- Add status bar formatting function
 wezterm.on('update-status', function(window, pane)
-  -- Get current date/time
   local date = wezterm.strftime('%Y-%m-%d %H:%M:%S')
-  
-  -- Get active workspace
   local stat = window:active_workspace()
-  
-  -- Get current working directory
-  local cwd = pane:get_current_working_dir()
-  local home = os.getenv('HOME')
-  if cwd then
-    cwd = cwd.file_path
+  local cwd_uri = pane:get_current_working_dir()
+  local cwd = 'N/A'
+  if cwd_uri then
+    cwd = cwd_uri.file_path
+    local home = os.getenv('HOME')
     if home then
       cwd = cwd:gsub('^' .. home, '~')
     end
   end
 
-  -- Get CPU and Memory usage
   local success, stdout, stderr = wezterm.run_child_process({ 'wsl', 'top', '-bn1' })
   local cpu = '??%'
   local mem = '??%'
   if success then
-    -- Parse top output for CPU and memory info
     cpu = stdout:match('%%Cpu%(s%):(%s+%d+.%d+)')
     mem = stdout:match('MiB Mem :%s+%d+.%d+ total,%s+(%d+.%d+) free')
   end
 
-  -- Set the status bar text
   window:set_right_status(wezterm.format({
     { Foreground = { Color = '#89b4fa' } },
     { Text = ' CPU: ' .. cpu .. ' | ' },
@@ -53,7 +45,7 @@ config.wsl_domains = {
     distribution = 'Arch',
     username = 'karleeov',
     default_cwd = '/home/karleeov',
-    default_prog = { 'fish', '-l' },
+    default_prog = { 'zsh', '-l' },
   },
   {
     name = 'WSL:Ubuntu22',
@@ -71,10 +63,6 @@ config.webgpu_power_preference = 'HighPerformance'
 
 config.background = {
   {
-    source = { File = wezterm.GLOBAL.background },
-    horizontal_align = 'Center',
-  },
-  {
     source = { Color = '#000000' },
     height = '100%',
     width = '100%',
@@ -86,9 +74,9 @@ config.enable_scroll_bar = false
 
 config.enable_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
 config.tab_max_width = 25
-config.show_tab_index_in_tab_bar = false
+config.show_tab_index_in_tab_bar = true
 config.switch_to_last_active_tab_when_closing_tab = true
 
 config.window_padding = {
@@ -121,12 +109,11 @@ config.keys = {
       }, pane)
     end), mods = 'CTRL|SHIFT', key = 'W' },
 
-  -- PowerShell Preview shortcut
   { action = wezterm.action_callback(function(window, pane)
       window:perform_action(wezterm.action.SpawnCommandInNewTab {
-        args = {'C:\\Program Files\\PowerShell\\7-preview\\pwsh.exe'},  -- Use full path if needed
+        args = {'%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'},
       }, pane)
-    end), mods = 'CTRL|SHIFT', key = 'B' },
+    end), mods = 'CTRL|ALT', key = 'P' },
 }
 
 config.status_update_interval = 1000

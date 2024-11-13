@@ -97,10 +97,10 @@ return {
   -- Background settings
   background = {
     {
-      source = { Color = '#0d0d1f' },
+      source = { Color = '#000000' },
       height = '100%',
       width = '100%',
-      opacity = 0.95,
+      opacity = 0.7,
     },
   },
 
