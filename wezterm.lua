@@ -13,9 +13,16 @@ local colors = {
 
 -- Event handler to update the right status
 wezterm.on('update-right-status', function(window, pane)
+  -- Get battery info
+  local battery_info = ""
+  for _, b in ipairs(wezterm.battery_info()) do
+    battery_info = string.format("🔋 %.0f%%", b.state_of_charge * 100)
+  end
+
+  -- Set the right status
   window:set_right_status(wezterm.format({
     { Foreground = { Color = colors.neon_green } },
-    { Text = "WezTerm | " },
+    { Text = battery_info .. " | " },
     { Foreground = { Color = colors.neon_pink } },
     { Text = wezterm.strftime("%Y-%m-%d %H:%M:%S") },
   }))
