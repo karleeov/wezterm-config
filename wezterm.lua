@@ -2,24 +2,31 @@ local wezterm = require('wezterm')
 
 -- Define a cyberpunk color palette
 local colors = {
-  -- Neon colors
-  neon_pink = '#FF1B8D',
-  neon_blue = '#00F3FF',
-  neon_purple = '#BD00FF',
-  neon_green = '#00FF9F',
-  neon_yellow = '#FFE600',
+  -- Primary neon colors
+  neon_pink = '#FF2A6D',    -- Hot pink
+  neon_blue = '#05D9E8',    -- Electric blue
+  neon_purple = '#B000FF',  -- Vibrant purple
+  neon_green = '#39FF14',   -- Laser green
+  neon_yellow = '#FFD300',  -- Cyber yellow
+  
+  -- Secondary neon colors
+  neon_orange = '#FF6C11',  -- Electric orange
+  neon_cyan = '#01FFF4',    -- Bright cyan
+  neon_magenta = '#FF1B8D', -- Electric magenta
+  neon_red = '#FF003C',     -- Laser red
+  neon_lime = '#CCFF00',    -- Electric lime
   
   -- Base colors
-  dark_bg = '#0a0b16',
-  darker_bg = '#070811',
-  cyber_black = '#000507',
-  cyber_white = '#FFFFFF',
+  dark_bg = '#0a0b16',      -- Deep space
+  darker_bg = '#070811',    -- Void
+  cyber_black = '#000507',  -- Absolute dark
+  text_color = '#01FFF4',   -- Default text color (cyan)
   
   -- Accent colors
-  cyber_purple = '#9D00FF',
-  cyber_red = '#FF003C',
-  cyber_orange = '#FF5D00',
-  cyber_teal = '#00FFC8'
+  cyber_purple = '#9D00FF',  -- Deep purple
+  cyber_red = '#FF003C',     -- Blood red
+  cyber_orange = '#FF5D00',  -- Burning orange
+  cyber_teal = '#00FFC8'     -- Matrix green
 }
 
 -- Event handler to update the right status with cyberpunk styling
@@ -31,7 +38,7 @@ wezterm.on('update-right-status', function(window, pane)
   window:set_right_status(wezterm.format({
     { Foreground = { Color = colors.neon_blue } },
     { Text = '󰖟 ' },  -- System icon
-    { Foreground = { Color = colors.neon_pink } },
+    { Foreground = { Color = colors.neon_magenta } },
     { Text = date .. ' ' },
     { Foreground = { Color = colors.neon_green } },
     { Text = '⚡' },  -- Power icon
@@ -86,18 +93,18 @@ config.switch_to_last_active_tab_when_closing_tab = true
 -- Color scheme configuration
 config.colors = {
   -- The default text color
-  foreground = colors.cyber_white,
+  foreground = colors.text_color,
   -- The default background color
   background = colors.dark_bg,
   
   -- Cursor colors
-  cursor_bg = colors.neon_pink,
+  cursor_bg = colors.neon_magenta,
   cursor_fg = colors.cyber_black,
-  cursor_border = colors.neon_pink,
+  cursor_border = colors.neon_magenta,
   
   -- Selection colors
   selection_fg = colors.cyber_black,
-  selection_bg = colors.neon_blue,
+  selection_bg = colors.neon_cyan,
   
   -- The color of the scrollbar "thumb"
   scrollbar_thumb = colors.cyber_purple,
@@ -107,26 +114,26 @@ config.colors = {
   
   -- ANSI colors
   ansi = {
-    colors.cyber_black,     -- Black
-    colors.cyber_red,       -- Red
-    colors.neon_green,      -- Green
-    colors.neon_yellow,     -- Yellow
-    colors.neon_blue,       -- Blue
-    colors.neon_purple,     -- Magenta
-    colors.cyber_teal,      -- Cyan
-    colors.cyber_white,     -- White
+    colors.cyber_black,      -- Black
+    colors.cyber_red,        -- Red
+    colors.neon_green,       -- Green
+    colors.neon_yellow,      -- Yellow
+    colors.neon_blue,        -- Blue
+    colors.neon_magenta,     -- Magenta
+    colors.neon_cyan,        -- Cyan
+    colors.text_color,       -- Bright text (instead of white)
   },
   
   -- Bright ANSI colors
   brights = {
-    colors.darker_bg,       -- Bright black
-    colors.cyber_orange,    -- Bright red
-    colors.neon_green,      -- Bright green
-    colors.neon_yellow,     -- Bright yellow
-    colors.neon_blue,       -- Bright blue
-    colors.cyber_purple,    -- Bright magenta
-    colors.cyber_teal,      -- Bright cyan
-    colors.cyber_white,     -- Bright white
+    colors.darker_bg,        -- Bright black
+    colors.neon_orange,      -- Bright red
+    colors.neon_lime,        -- Bright green
+    colors.neon_yellow,      -- Bright yellow
+    colors.neon_cyan,        -- Bright blue
+    colors.neon_purple,      -- Bright magenta
+    colors.cyber_teal,       -- Bright cyan
+    colors.neon_blue,        -- Bright text (instead of white)
   },
 
   -- Tab bar colors
@@ -134,14 +141,14 @@ config.colors = {
     background = colors.darker_bg,
     active_tab = {
       bg_color = colors.cyber_black,
-      fg_color = colors.neon_pink,
+      fg_color = colors.neon_magenta,
       intensity = "Bold",
       underline = "Single",
       italic = false,
     },
     inactive_tab = {
       bg_color = colors.darker_bg,
-      fg_color = colors.neon_blue,
+      fg_color = colors.neon_cyan,
       italic = true,
     },
     inactive_tab_hover = {
