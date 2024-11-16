@@ -1,225 +1,217 @@
 local wezterm = require('wezterm')
 
--- Define a color palette for easy management
+-- Define a cyberpunk color palette
 local colors = {
-  neon_green = '#00ff9f',
-  neon_pink = '#ff00ff',
-  neon_blue = '#00b8ff',
-  neon_cyan = '#00ffff',
-  dark_background = '#0d0d1f',
-  bright_white = '#ffffff',
-  dark_grey = '#313244',
+  -- Neon colors
+  neon_pink = '#FF1B8D',
+  neon_blue = '#00F3FF',
+  neon_purple = '#BD00FF',
+  neon_green = '#00FF9F',
+  neon_yellow = '#FFE600',
+  
+  -- Base colors
+  dark_bg = '#0a0b16',
+  darker_bg = '#070811',
+  cyber_black = '#000507',
+  cyber_white = '#FFFFFF',
+  
+  -- Accent colors
+  cyber_purple = '#9D00FF',
+  cyber_red = '#FF003C',
+  cyber_orange = '#FF5D00',
+  cyber_teal = '#00FFC8'
 }
 
--- Event handler to update the right status
+-- Event handler to update the right status with cyberpunk styling
 wezterm.on('update-right-status', function(window, pane)
+  -- Get current date/time
+  local date = wezterm.strftime('%Y-%m-%d %H:%M')
+  
+  -- Create a cyberpunk-style status
   window:set_right_status(wezterm.format({
-    { Foreground = { Color = colors.neon_green } },
-    { Text = "WezTerm | " },
+    { Foreground = { Color = colors.neon_blue } },
+    { Text = '󰖟 ' },  -- System icon
     { Foreground = { Color = colors.neon_pink } },
-    { Text = wezterm.strftime("%Y-%m-%d %H:%M:%S") },
+    { Text = date .. ' ' },
+    { Foreground = { Color = colors.neon_green } },
+    { Text = '⚡' },  -- Power icon
   }))
 end)
 
-return {
-  -- Performance settings
-  animation_fps = 60,
-  max_fps = 60,
-  front_end = 'WebGpu',
-  webgpu_power_preference = 'HighPerformance',
+local config = {}
 
-  -- Appearance settings
-  colors = {
-    foreground = colors.neon_green,
-    background = colors.dark_background,
-    cursor_bg = colors.neon_pink,
-    cursor_fg = '#000000',
-    cursor_border = colors.neon_pink,
-    selection_fg = '#000000',
-    selection_bg = colors.neon_cyan,
-    scrollbar_thumb = '#222222',
-    split = '#444444',
+-- Performance settings
+config.animation_fps = 60
+config.max_fps = 120
+config.front_end = 'WebGpu'
+config.webgpu_power_preference = 'HighPerformance'
 
-    ansi = {
-      '#000000',  -- black
-      '#ff0055',  -- red
-      colors.neon_green,  -- green
-      colors.neon_pink,  -- magenta
-      colors.neon_blue,  -- blue
-      '#bd00ff',  -- purple
-      colors.neon_cyan,  -- cyan
-      colors.bright_white,  -- white
+-- Font configuration
+config.font = wezterm.font_with_fallback({
+  { family = "JetBrainsMono Nerd Font", weight = "Medium" },
+  { family = "Fira Code", weight = "Medium" },
+  { family = "Segoe UI", weight = "Medium" },
+})
+config.font_size = 11
+config.line_height = 1.2
+config.cell_width = 1.0
+config.underline_thickness = 3
+config.underline_position = -4
+
+-- Window appearance
+config.window_padding = {
+  left = 20,
+  right = 20,
+  top = 20,
+  bottom = 20,
+}
+config.window_background_opacity = 0.90
+config.text_background_opacity = 0.95
+config.window_decorations = "RESIZE"
+config.window_close_confirmation = 'NeverPrompt'
+
+-- Cursor settings
+config.default_cursor_style = 'BlinkingBar'
+config.cursor_blink_rate = 400
+config.force_reverse_video_cursor = true
+
+-- Tab bar settings
+config.enable_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = true
+config.use_fancy_tab_bar = true
+config.tab_max_width = 25
+config.show_tab_index_in_tab_bar = false
+config.switch_to_last_active_tab_when_closing_tab = true
+
+-- Color scheme configuration
+config.colors = {
+  -- The default text color
+  foreground = colors.cyber_white,
+  -- The default background color
+  background = colors.dark_bg,
+  
+  -- Cursor colors
+  cursor_bg = colors.neon_pink,
+  cursor_fg = colors.cyber_black,
+  cursor_border = colors.neon_pink,
+  
+  -- Selection colors
+  selection_fg = colors.cyber_black,
+  selection_bg = colors.neon_blue,
+  
+  -- The color of the scrollbar "thumb"
+  scrollbar_thumb = colors.cyber_purple,
+  
+  -- The color of the split lines between panes
+  split = colors.neon_blue,
+  
+  -- ANSI colors
+  ansi = {
+    colors.cyber_black,     -- Black
+    colors.cyber_red,       -- Red
+    colors.neon_green,      -- Green
+    colors.neon_yellow,     -- Yellow
+    colors.neon_blue,       -- Blue
+    colors.neon_purple,     -- Magenta
+    colors.cyber_teal,      -- Cyan
+    colors.cyber_white,     -- White
+  },
+  
+  -- Bright ANSI colors
+  brights = {
+    colors.darker_bg,       -- Bright black
+    colors.cyber_orange,    -- Bright red
+    colors.neon_green,      -- Bright green
+    colors.neon_yellow,     -- Bright yellow
+    colors.neon_blue,       -- Bright blue
+    colors.cyber_purple,    -- Bright magenta
+    colors.cyber_teal,      -- Bright cyan
+    colors.cyber_white,     -- Bright white
+  },
+
+  -- Tab bar colors
+  tab_bar = {
+    background = colors.darker_bg,
+    active_tab = {
+      bg_color = colors.cyber_black,
+      fg_color = colors.neon_pink,
+      intensity = "Bold",
+      underline = "Single",
+      italic = false,
     },
-    brights = {
-      '#001eff',  -- bright black
-      '#ff1177',  -- bright red
-      '#00ffaa',  -- bright green
-      colors.neon_pink,  -- bright magenta
-      colors.neon_cyan,  -- bright blue
-      '#d600ff',  -- bright purple
-      colors.neon_cyan,  -- bright cyan
-      colors.bright_white,  -- bright white
+    inactive_tab = {
+      bg_color = colors.darker_bg,
+      fg_color = colors.neon_blue,
+      italic = true,
     },
-
-    indexed = { [136] = '#af8700' },
-
-    compose_cursor = 'orange',
-
-    copy_mode_active_highlight_bg = { Color = '#000000' },
-    copy_mode_active_highlight_fg = { AnsiColor = 'Black' },
-    copy_mode_inactive_highlight_bg = { Color = '#52ad70' },
-    copy_mode_inactive_highlight_fg = { AnsiColor = 'White' },
-
-    quick_select_label_bg = { Color = 'peru' },
-    quick_select_label_fg = { Color = '#ffffff' },
-    quick_select_match_bg = { AnsiColor = 'Navy' },
-    quick_select_match_fg = { Color = '#ffffff' },
-
-    -- Tab bar settings
-    tab_bar = {
-      background = colors.dark_background,
-
-      active_tab = {
-        bg_color = colors.neon_green,
-        fg_color = colors.dark_background,
-        intensity = 'Bold',
-        underline = 'None',
-        italic = false,
-        strikethrough = false,
-      },
-
-      inactive_tab = {
-        bg_color = colors.dark_background,
-        fg_color = colors.neon_blue,
-      },
-
-      inactive_tab_hover = {
-        bg_color = '#002244',
-        fg_color = colors.neon_cyan,
-        italic = true,
-      },
-
-      new_tab = {
-        bg_color = colors.dark_background,
-        fg_color = colors.neon_pink,
-      },
-
-      new_tab_hover = {
-        bg_color = '#002244',
-        fg_color = colors.neon_cyan,
-        italic = true,
-      },
+    inactive_tab_hover = {
+      bg_color = colors.dark_bg,
+      fg_color = colors.neon_purple,
+      italic = true,
+    },
+    new_tab = {
+      bg_color = colors.darker_bg,
+      fg_color = colors.neon_green,
+    },
+    new_tab_hover = {
+      bg_color = colors.dark_bg,
+      fg_color = colors.neon_blue,
+      italic = true,
     },
   },
+}
 
-  -- Background settings
-  background = {
-    {
-      source = { Color = colors.dark_background },
-      height = '100%',
-      width = '100%',
-      opacity = 0.95,
-    },
-  },
+-- Shell configuration
+local powershell_dir = 'C:/Program Files/PowerShell/7/pwsh.exe'
+local fallback_powershell = 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
 
-  -- Scrollbar settings
-  enable_scroll_bar = false,  -- Keep off for better performance
+-- Check if PowerShell 7 exists, otherwise use Windows PowerShell
+local function get_powershell()
+  local success, _ = wezterm.run_child_process({"cmd.exe", "/c", "where", powershell_dir})
+  if success then
+    return powershell_dir
+  end
+  return fallback_powershell
+end
 
-  -- Tab bar settings
-  enable_tab_bar = true,
-  hide_tab_bar_if_only_one_tab = false,
-  use_fancy_tab_bar = true,
-  tab_max_width = 25,
-  show_tab_index_in_tab_bar = false,
-  switch_to_last_active_tab_when_closing_tab = true,
+-- Default to Arch Linux WSL
+config.default_prog = { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
 
-  -- Window settings
-  window_padding = {
-    left = 5,
-    right = 10,
-    top = 12,
-    bottom = 7,
-  },
-  window_close_confirmation = 'NeverPrompt',
-  window_frame = {
-    active_titlebar_bg = '#0d0d1f',
-    inactive_titlebar_bg = '#0a0a12',
-    font = wezterm.font({ family = "JetBrainsMono Nerd Font", weight = "Bold" }),
-    font_size = 10,
-  },
-  inactive_pane_hsb = {
-    saturation = 0.8,
-    brightness = 0.7,
-  },
+-- Exit behavior
+config.exit_behavior = "Hold"
+config.clean_exit_codes = {0, 130}
 
-  -- Key bindings
-  keys = {
-    { action = wezterm.action.CopyTo 'Clipboard', mods = 'CTRL', key = 'C' },
-    { action = wezterm.action.PasteFrom 'Clipboard', mods = 'CTRL', key = 'V' },
-    { action = wezterm.action.DecreaseFontSize, mods = 'CTRL', key = '-' },
-    { action = wezterm.action.IncreaseFontSize, mods = 'CTRL', key = '=' },
-    { action = wezterm.action.ResetFontSize, mods = 'CTRL', key = '0' },
-    { action = wezterm.action.ToggleFullScreen, key = 'F11' },
-    { action = wezterm.action.ReloadConfiguration, mods = 'CTRL|SHIFT', key = 'R' },
-    { action = wezterm.action.SpawnCommandInNewTab { args = { 'pwsh-preview' } }, mods = 'CTRL|SHIFT', key = 'P' },
-  },
-
-  -- Add these new settings
-  window_background_opacity = 0.95,
-  text_background_opacity = 0.9,
+-- Enhanced key bindings
+config.keys = {
+  -- Basic operations
+  { action = wezterm.action.CopyTo 'Clipboard', mods = 'CTRL', key = 'C' },
+  { action = wezterm.action.PasteFrom 'Clipboard', mods = 'CTRL', key = 'V' },
+  { action = wezterm.action.DecreaseFontSize, mods = 'CTRL', key = '-' },
+  { action = wezterm.action.IncreaseFontSize, mods = 'CTRL', key = '=' },
+  { action = wezterm.action.ResetFontSize, mods = 'CTRL', key = '0' },
+  { action = wezterm.action.ToggleFullScreen, key = 'F11' },
+  { action = wezterm.action.ReloadConfiguration, mods = 'CTRL|SHIFT', key = 'R' },
   
-  -- Add window decorations
-  window_decorations = "RESIZE",
+  -- Tab management
+  { action = wezterm.action.SpawnTab 'CurrentPaneDomain', mods = 'CTRL|SHIFT', key = 't' },
+  { action = wezterm.action.CloseCurrentTab{ confirm = false }, mods = 'CTRL|SHIFT', key = 'w' },
+  { action = wezterm.action.ActivateTabRelative(-1), mods = 'CTRL', key = 'PageUp' },
+  { action = wezterm.action.ActivateTabRelative(1), mods = 'CTRL', key = 'PageDown' },
   
-  -- Add a cool font (install this font first)
-  font = wezterm.font_with_fallback({
-    { family = "JetBrainsMono Nerd Font", weight = "Medium" },
-    { family = "Fira Code", weight = "Medium" },
-  }),
-  font_size = 11,
+  -- Pane management
+  { action = wezterm.action.SplitVertical{ domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '-' },
+  { action = wezterm.action.SplitHorizontal{ domain = 'CurrentPaneDomain' }, mods = 'CTRL|SHIFT', key = '\\' },
+  { action = wezterm.action.ActivatePaneDirection 'Left', mods = 'CTRL|SHIFT', key = 'h' },
+  { action = wezterm.action.ActivatePaneDirection 'Right', mods = 'CTRL|SHIFT', key = 'l' },
+  { action = wezterm.action.ActivatePaneDirection 'Up', mods = 'CTRL|SHIFT', key = 'k' },
+  { action = wezterm.action.ActivatePaneDirection 'Down', mods = 'CTRL|SHIFT', key = 'j' },
   
-  -- Add some cool effects
-  window_frame = {
-    active_titlebar_bg = '#0a0a12',
-    inactive_titlebar_bg = '#0a0a12',
-    font = wezterm.font({ family = "JetBrainsMono Nerd Font", weight = "Bold" }),
-    font_size = 10,
-  },
-  
-  -- Add a cool cursor style
-  default_cursor_style = 'BlinkingBlock',
-  cursor_blink_rate = 500,
-  
-  -- Add visual bell effect
-  visual_bell = {
-    fade_in_duration_ms = 75,
-    fade_out_duration_ms = 75,
-    target = 'CursorColor',
-  },
+  -- Shell shortcuts
+  { action = wezterm.action.SpawnCommandInNewTab { args = { get_powershell() } }, mods = 'CTRL|SHIFT', key = 'p' },
+  { action = wezterm.action.SpawnCommandInNewTab { args = { 'wsl.exe', '--distribution', 'Arch' } }, mods = 'CTRL|SHIFT', key = 'l' },
+}
 
-  -- Add this to create a startup animation effect
-  window_padding = {
-    left = "1cell",
-    right = "1cell",
-    top = "0.5cell",
-    bottom = "0.5cell",
-  },
+-- Set working directory to user's home
+config.default_cwd = wezterm.home_dir
 
-  initial_rows = 24,
-  initial_cols = 80,
-
-  -- Replace the tab_bar_style block with this simpler version:
-  tab_bar_style = {
-    new_tab = wezterm.format({
-      { Text = " + " },
-    }),
-  },
-
-  -- Move these settings outside of tab_bar_style as they are top-level config options
-  tab_max_width = 25,
-  show_tab_index_in_tab_bar = false,
-  hide_tab_bar_if_only_one_tab = false,
-
-  -- Set Arch WSL as the default program
-  default_prog = { 'wsl', '--distribution', 'Arch', '--exec', '/bin/zsh' },  -- Adjust the shell if needed
-} 
+return config
