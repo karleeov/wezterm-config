@@ -26,7 +26,13 @@ local colors = {
   cyber_purple = '#9D00FF',  -- Deep purple
   cyber_red = '#FF003C',     -- Blood red
   cyber_orange = '#FF5D00',  -- Burning orange
-  cyber_teal = '#00FFC8'     -- Matrix green
+  cyber_teal = '#00FFC8',    -- Matrix green
+  
+  -- Additional cyberpunk colors
+  grid_blue = '#00A9FF',     -- Grid lines
+  highlight_pink = '#FF71CE', -- Highlight
+  soft_purple = '#B967FF',   -- Soft accent
+  dark_purple = '#1A1A2E',   -- Deep background
 }
 
 -- Event handler to update the right status with cyberpunk styling
@@ -36,12 +42,14 @@ wezterm.on('update-right-status', function(window, pane)
   
   -- Create a cyberpunk-style status
   window:set_right_status(wezterm.format({
-    { Foreground = { Color = colors.neon_blue } },
-    { Text = '󰖟 ' },  -- System icon
-    { Foreground = { Color = colors.neon_magenta } },
+    { Background = { Color = colors.dark_purple }},
+    { Foreground = { Color = colors.neon_blue }},
+    { Text = ' 󰖟 ' },  -- System icon
+    { Foreground = { Color = colors.highlight_pink }},
     { Text = date .. ' ' },
-    { Foreground = { Color = colors.neon_green } },
+    { Foreground = { Color = colors.neon_green }},
     { Text = '⚡' },  -- Power icon
+    { Text = ' ' },
   }))
 end)
 
@@ -52,6 +60,12 @@ config.animation_fps = 60
 config.max_fps = 120
 config.front_end = 'WebGpu'
 config.webgpu_power_preference = 'HighPerformance'
+config.enable_wayland = true
+config.enable_scroll_bar = true
+config.scrollback_lines = 10000
+config.enable_kitty_keyboard = true
+config.enable_csi_u_key_encoding = true
+config.term = 'wezterm'
 
 -- Font configuration
 config.font = wezterm.font_with_fallback({
@@ -72,10 +86,18 @@ config.window_padding = {
   top = 20,
   bottom = 20,
 }
-config.window_background_opacity = 0.90
-config.text_background_opacity = 0.95
-config.window_decorations = "RESIZE"
+config.window_background_opacity = 0.95
+config.text_background_opacity = 1.0
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+config.integrated_title_button_style = "Windows"
+config.integrated_title_button_color = "auto"
 config.window_close_confirmation = 'NeverPrompt'
+config.window_frame = {
+    font = wezterm.font { family = 'JetBrainsMono Nerd Font', weight = 'Bold' },
+    font_size = 11.0,
+    active_titlebar_bg = colors.dark_purple,
+    inactive_titlebar_bg = colors.cyber_black,
+}
 
 -- Cursor settings
 config.default_cursor_style = 'BlinkingBar'
@@ -89,83 +111,89 @@ config.use_fancy_tab_bar = true
 config.tab_max_width = 25
 config.show_tab_index_in_tab_bar = false
 config.switch_to_last_active_tab_when_closing_tab = true
+config.tab_bar_at_bottom = true
+config.show_new_tab_button_in_tab_bar = true
 
--- Color scheme configuration
+-- Custom tab bar style
+config.tab_bar_style = {
+    new_tab = wezterm.format({
+        { Background = { Color = colors.dark_purple }},
+        { Foreground = { Color = colors.neon_blue }},
+        { Text = ' + ' },
+    }),
+    new_tab_hover = wezterm.format({
+        { Background = { Color = colors.soft_purple }},
+        { Foreground = { Color = colors.neon_cyan }},
+        { Text = ' + ' },
+    }),
+}
+
+-- Colors configuration
 config.colors = {
-  -- The default text color
-  foreground = colors.text_color,
-  -- The default background color
-  background = colors.dark_bg,
-  
-  -- Cursor colors
-  cursor_bg = colors.neon_magenta,
-  cursor_fg = colors.cyber_black,
-  cursor_border = colors.neon_magenta,
-  
-  -- Selection colors
-  selection_fg = colors.cyber_black,
-  selection_bg = colors.neon_cyan,
-  
-  -- The color of the scrollbar "thumb"
-  scrollbar_thumb = colors.cyber_purple,
-  
-  -- The color of the split lines between panes
-  split = colors.neon_blue,
-  
-  -- ANSI colors
-  ansi = {
-    colors.cyber_black,      -- Black
-    colors.cyber_red,        -- Red
-    colors.neon_green,       -- Green
-    colors.neon_yellow,      -- Yellow
-    colors.neon_blue,        -- Blue
-    colors.neon_magenta,     -- Magenta
-    colors.neon_cyan,        -- Cyan
-    colors.text_color,       -- Bright text (instead of white)
-  },
-  
-  -- Bright ANSI colors
-  brights = {
-    colors.darker_bg,        -- Bright black
-    colors.neon_orange,      -- Bright red
-    colors.neon_lime,        -- Bright green
-    colors.neon_yellow,      -- Bright yellow
-    colors.neon_cyan,        -- Bright blue
-    colors.neon_purple,      -- Bright magenta
-    colors.cyber_teal,       -- Bright cyan
-    colors.neon_blue,        -- Bright text (instead of white)
-  },
-
-  -- Tab bar colors
-  tab_bar = {
-    background = colors.darker_bg,
-    active_tab = {
-      bg_color = colors.cyber_black,
-      fg_color = colors.neon_magenta,
-      intensity = "Bold",
-      underline = "Single",
-      italic = false,
+    foreground = colors.text_color,
+    background = colors.dark_bg,
+    cursor_bg = colors.neon_magenta,
+    cursor_fg = colors.cyber_black,
+    cursor_border = colors.neon_blue,
+    
+    -- Selection colors
+    selection_fg = colors.cyber_black,
+    selection_bg = colors.neon_cyan,
+    
+    -- Normal colors
+    ansi = {
+        colors.cyber_black,
+        colors.neon_red,
+        colors.neon_green,
+        colors.neon_yellow,
+        colors.neon_blue,
+        colors.neon_magenta,
+        colors.neon_cyan,
+        '#FFFFFF',
     },
-    inactive_tab = {
-      bg_color = colors.darker_bg,
-      fg_color = colors.neon_cyan,
-      italic = true,
+    
+    -- Bright colors
+    brights = {
+        colors.dark_purple,
+        colors.cyber_red,
+        colors.neon_lime,
+        colors.neon_yellow,
+        colors.grid_blue,
+        colors.highlight_pink,
+        colors.cyber_teal,
+        '#FFFFFF',
     },
-    inactive_tab_hover = {
-      bg_color = colors.dark_bg,
-      fg_color = colors.neon_purple,
-      italic = true,
+    
+    -- Tab bar colors
+    tab_bar = {
+        background = colors.cyber_black,
+        active_tab = {
+            bg_color = colors.dark_purple,
+            fg_color = colors.neon_cyan,
+            intensity = 'Bold',
+            underline = 'None',
+            italic = false,
+        },
+        inactive_tab = {
+            bg_color = colors.cyber_black,
+            fg_color = colors.neon_blue,
+            intensity = 'Half',
+        },
+        inactive_tab_hover = {
+            bg_color = colors.soft_purple,
+            fg_color = colors.neon_cyan,
+            italic = true,
+        },
+        new_tab = {
+            bg_color = colors.dark_purple,
+            fg_color = colors.neon_blue,
+        },
+        new_tab_hover = {
+            bg_color = colors.soft_purple,
+            fg_color = colors.neon_cyan,
+            italic = true,
+        },
     },
-    new_tab = {
-      bg_color = colors.darker_bg,
-      fg_color = colors.neon_green,
-    },
-    new_tab_hover = {
-      bg_color = colors.dark_bg,
-      fg_color = colors.neon_blue,
-      italic = true,
-    },
-  },
 }
 
 -- Shell configuration
@@ -216,6 +244,18 @@ config.keys = {
   -- Shell shortcuts
   { action = wezterm.action.SpawnCommandInNewTab { args = { get_powershell() } }, mods = 'CTRL|SHIFT', key = 'p' },
   { action = wezterm.action.SpawnCommandInNewTab { args = { 'wsl.exe', '--distribution', 'Arch' } }, mods = 'CTRL|SHIFT', key = 'l' },
+  
+  -- Additional keybindings
+  {
+    key = '|',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '_',
+    mods = 'CTRL|SHIFT',
+    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
 }
 
 -- Set working directory to user's home
