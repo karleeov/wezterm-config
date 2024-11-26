@@ -222,6 +222,41 @@ config.colors = {
     },
 }
 
+-- Default shell configuration
+local powershell_dir = 'C:/Program Files/PowerShell/7-preview/pwsh.exe' -- PowerShell 7.5.0 path
+local fallback_paths = {
+    'C:/Program Files/PowerShell/7/pwsh.exe',
+    'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
+}
+
+local function get_powershell()
+    -- First try PowerShell 7.5.0
+    local success, _ = pcall(wezterm.run_child_process, {powershell_dir, "-c", "exit"})
+    if success then
+        return powershell_dir
+    end
+    
+    -- Try fallback paths
+    for _, path in ipairs(fallback_paths) do
+        success, _ = pcall(wezterm.run_child_process, {path, "-c", "exit"})
+        if success then
+            return path
+        end
+    end
+    
+    -- If nothing else works, return the default PowerShell
+    return fallback_paths[2]
+end
+
+-- Store the shell configurations
+local shell_configs = {
+    wsl = { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' },
+    powershell = { get_powershell() }
+}
+
+config.default_prog = shell_configs.wsl
+config.default_cwd = wezterm.home_dir
+
 -- Key bindings
 config.keys = {
     -- Copy/Paste with Ctrl+C/Ctrl+V
@@ -263,21 +298,22 @@ config.keys = {
     { action = wezterm.action.ActivatePaneDirection 'Right', mods = 'CTRL|SHIFT', key = 'l' },
     { action = wezterm.action.ActivatePaneDirection 'Up', mods = 'CTRL|SHIFT', key = 'k' },
     { action = wezterm.action.ActivatePaneDirection 'Down', mods = 'CTRL|SHIFT', key = 'j' },
+
+    -- Shell switching
+    {
+        key = 'p',
+        mods = 'CTRL|SHIFT',
+        action = wezterm.action.SpawnCommandInNewTab {
+            args = shell_configs.powershell,
+        },
+    },
+    {
+        key = 'w',
+        mods = 'CTRL|ALT',
+        action = wezterm.action.SpawnCommandInNewTab {
+            args = shell_configs.wsl,
+        },
+    },
 }
-
--- Default shell configuration
-local powershell_dir = 'C:/Program Files/PowerShell/7/pwsh.exe'
-local fallback_powershell = 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
-
-local function get_powershell()
-    local success, _ = wezterm.run_child_process({"cmd.exe", "/c", "where", powershell_dir})
-    if success then
-        return powershell_dir
-    end
-    return fallback_powershell
-end
-
-config.default_prog = { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
-config.default_cwd = wezterm.home_dir
 
 return config
