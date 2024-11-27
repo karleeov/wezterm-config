@@ -100,7 +100,7 @@ config.term = 'wezterm'
 
 -- Font configuration
 config.font = wezterm.font_with_fallback({
-    { family = "JetBrainsMono Nerd Font", weight = "Medium" },
+    { family = "JetBrainsMono Nerd Font", weight = "Medium", harfbuzz_features = {"calt=1", "clig=1", "liga=1"} },
     { family = "Fira Code", weight = "Medium" },
     { family = "Segoe UI", weight = "Medium" },
 })
@@ -263,6 +263,9 @@ config.keys = {
     { action = wezterm.action.ActivatePaneDirection 'Right', mods = 'CTRL|SHIFT', key = 'l' },
     { action = wezterm.action.ActivatePaneDirection 'Up', mods = 'CTRL|SHIFT', key = 'k' },
     { action = wezterm.action.ActivatePaneDirection 'Down', mods = 'CTRL|SHIFT', key = 'j' },
+
+    -- Launch PowerShell Preview
+    { action = wezterm.action.SpawnCommandInNewTab { args = { 'pwsh-preview' } }, mods = 'CTRL|SHIFT', key = 'P' },
 }
 
 -- Default shell configuration
