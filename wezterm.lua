@@ -8,42 +8,32 @@ local SYMBOLS = {
     CLOCK = '󱑎',
     FOLDER = '󰉋',
     NET = '󰛳',
-    BATTERY_HIGH = '󱈏',
-    BATTERY_MED = '󱊣',
-    BATTERY_LOW = '󱊡',
-    GRID = '󰹕',
+    BATTERY_HIGH = '󰁹',
+    BATTERY_MED = '󰁾',
+    BATTERY_LOW = '󰂃',
+    GRID = '󰹉',
     LOCK = '󰌾',
     POWER = '󰐥',
-    SEPARATOR = '󰘧',
-    DOT = '󰇘',
-    SPLIT_HORIZONTAL = '󰯍',
-    SPLIT_VERTICAL = '󰯎',
-    CIRCUIT = '󰘚',
-    DATA = '󰋊',
+    SEPARATOR = '󰇙',
+    DOT = '󰧞',
 }
 
 -- Define a cyberpunk color palette
 local colors = {
-    -- Core neon colors
-    neon_pink = '#FF10F0',
-    neon_blue = '#00FFF9',
-    neon_purple = '#BD00FF',
+    neon_pink = '#FF2A6D',
+    neon_blue = '#05D9E8',
+    neon_purple = '#B000FF',
     neon_green = '#39FF14',
-    neon_yellow = '#FFFF00',
+    neon_yellow = '#FFD300',
     neon_orange = '#FF6C11',
-    neon_cyan = '#00FFFF',
+    neon_cyan = '#01FFF4',
     neon_magenta = '#FF1B8D',
     neon_red = '#FF003C',
     neon_lime = '#CCFF00',
-    
-    -- Background shades
-    dark_bg = '#0a0817',
-    darker_bg = '#060614',
+    dark_bg = '#0a0b16',
+    darker_bg = '#070811',
     cyber_black = '#000507',
-    cyber_void = '#0D0221',
-    
-    -- Accent colors
-    text_color = '#00FFFF',
+    text_color = '#01FFF4',
     cyber_purple = '#9D00FF',
     cyber_red = '#FF003C',
     cyber_orange = '#FF5D00',
@@ -53,14 +43,8 @@ local colors = {
     soft_purple = '#B967FF',
     dark_purple = '#1A1A2E',
     matrix_green = '#00FF41',
+    cyber_void = '#0D0221',
     neon_blood = '#FF073A',
-    
-    -- Additional cyberpunk colors
-    cyber_azure = '#007FFF',
-    cyber_electric = '#0FF0FC',
-    cyber_hot_pink = '#FF69B4',
-    cyber_plasma = '#FF10F0',
-    cyber_pulse = '#FF003F',
 }
 
 local config = {}
@@ -127,13 +111,13 @@ config.underline_position = -4
 
 -- Window appearance
 config.window_padding = {
-    left = 15,
-    right = 15,
-    top = 12,
-    bottom = 12,
+    left = 20,
+    right = 20,
+    top = 20,
+    bottom = 20,
 }
-config.window_background_opacity = 0.92
-config.text_background_opacity = 0.95
+config.window_background_opacity = 0.95
+config.text_background_opacity = 1.0
 config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 config.integrated_title_button_style = "Windows"
 config.integrated_title_button_color = "auto"
@@ -143,20 +127,11 @@ config.window_frame = {
     font_size = 11.0,
     active_titlebar_bg = colors.cyber_void,
     inactive_titlebar_bg = colors.cyber_black,
-    active_titlebar_fg = colors.neon_cyan,
-    inactive_titlebar_fg = colors.grid_blue,
-    active_titlebar_border_bottom = colors.neon_pink,
-    button_fg = colors.neon_cyan,
-    button_bg = colors.cyber_void,
-    button_hover_fg = colors.neon_pink,
-    button_hover_bg = colors.dark_purple,
 }
 
 -- Cursor settings
-config.default_cursor_style = 'SteadyBar'
-config.cursor_blink_rate = 500
-config.cursor_blink_ease_in = 'Linear'
-config.cursor_blink_ease_out = 'Linear'
+config.default_cursor_style = 'BlinkingBar'
+config.cursor_blink_rate = 400
 config.force_reverse_video_cursor = true
 
 -- Tab bar settings
@@ -177,8 +152,8 @@ config.tab_bar_style = {
         { Text = ' ' .. SYMBOLS.POWER .. ' ' },
     }),
     new_tab_hover = wezterm.format({
-        { Background = { Color = colors.dark_purple }},
-        { Foreground = { Color = colors.cyber_electric }},
+        { Background = { Color = colors.soft_purple }},
+        { Foreground = { Color = colors.neon_cyan }},
         { Text = ' ' .. SYMBOLS.POWER .. ' ' },
     }),
 }
@@ -191,28 +166,28 @@ config.colors = {
     cursor_fg = colors.cyber_black,
     cursor_border = colors.neon_blue,
     selection_fg = colors.cyber_black,
-    selection_bg = colors.cyber_electric,
+    selection_bg = colors.neon_cyan,
     
     ansi = {
         colors.cyber_black,
-        colors.cyber_pulse,
+        colors.neon_blood,
         colors.matrix_green,
         colors.neon_yellow,
-        colors.cyber_azure,
+        colors.grid_blue,
         colors.neon_magenta,
-        colors.cyber_electric,
+        colors.neon_cyan,
         '#FFFFFF',
     },
     
     brights = {
         colors.dark_purple,
-        colors.neon_blood,
+        colors.cyber_red,
         colors.neon_lime,
         colors.neon_yellow,
         colors.grid_blue,
-        colors.cyber_hot_pink,
+        colors.highlight_pink,
         colors.cyber_teal,
-        colors.neon_cyan,
+        '#FFFFFF',
     },
     
     tab_bar = {
@@ -221,7 +196,7 @@ config.colors = {
             bg_color = colors.dark_purple,
             fg_color = colors.neon_cyan,
             intensity = 'Bold',
-            underline = 'Single',
+            underline = 'None',
             italic = false,
         },
         inactive_tab = {
@@ -230,8 +205,8 @@ config.colors = {
             intensity = 'Half',
         },
         inactive_tab_hover = {
-            bg_color = colors.cyber_void,
-            fg_color = colors.cyber_electric,
+            bg_color = colors.soft_purple,
+            fg_color = colors.neon_cyan,
             italic = true,
         },
         new_tab = {
@@ -239,25 +214,10 @@ config.colors = {
             fg_color = colors.neon_blue,
         },
         new_tab_hover = {
-            bg_color = colors.dark_purple,
-            fg_color = colors.cyber_electric,
+            bg_color = colors.soft_purple,
+            fg_color = colors.neon_cyan,
             italic = true,
         },
-    },
-    
-    visual_bell = colors.cyber_pulse,
-    
-    -- Split colors
-    split = colors.neon_magenta,
-    
-    -- Indexed colors for more variety
-    indexed = {
-        [16] = colors.cyber_orange,
-        [17] = colors.cyber_plasma,
-        [18] = colors.cyber_electric,
-        [19] = colors.neon_blood,
-        [20] = colors.cyber_hot_pink,
-        [21] = colors.cyber_pulse,
     },
 }
 
