@@ -91,7 +91,6 @@ config.animation_fps = 60
 config.max_fps = 120
 config.front_end = 'WebGpu'
 config.webgpu_power_preference = 'HighPerformance'
-config.enable_wayland = true
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
 config.enable_kitty_keyboard = true
@@ -269,18 +268,25 @@ config.keys = {
 }
 
 -- Default shell configuration
-local powershell_dir = 'C:/Program Files/PowerShell/7/pwsh.exe'
-local fallback_powershell = 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
-
-local function get_powershell()
-    local success, _ = wezterm.run_child_process({"cmd.exe", "/c", "where", powershell_dir})
+local function get_shell()
+    -- Check if WSL and Arch are available
+    local success, _ = wezterm.run_child_process({"wsl.exe", "--distribution", "Arch", "which", "zsh"})
     if success then
-        return powershell_dir
+        return { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
     end
-    return fallback_powershell
+    
+    -- Fall back to PowerShell 7 if available
+    local pwsh_path = 'C:/Program Files/PowerShell/7/pwsh.exe'
+    success, _ = wezterm.run_child_process({"cmd.exe", "/c", "where", pwsh_path})
+    if success then
+        return { pwsh_path }
+    end
+    
+    -- Ultimate fallback to Windows PowerShell
+    return { 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe' }
 end
 
-config.default_prog = { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
+config.default_prog = get_shell()
 config.default_cwd = wezterm.home_dir
 
 return config
