@@ -49,7 +49,7 @@ local colors = {
 
 local config = {}
 
--- Custom function to get battery info
+-- Improved battery info function with charging status
 local function get_battery_info()
     local success, battery = pcall(wezterm.battery_info)
     if success and battery then
@@ -60,19 +60,22 @@ local function get_battery_info()
         elseif state.state_of_charge < 0.7 then
             icon = SYMBOLS.BATTERY_MED
         end
+        if state.is_charging then
+            icon = icon .. '⚡'  -- Add a lightning bolt if charging
+        end
         return string.format('%s %.0f%% ', icon, state.state_of_charge * 100)
     end
     return ''
 end
 
--- Event handler for status bar
+-- Event handler for status bar with improved contrast
 wezterm.on('update-right-status', function(window, pane)
     local date = wezterm.strftime('%H:%M')
     local battery = get_battery_info()
     
     window:set_right_status(wezterm.format({
         { Background = { Color = colors.cyber_void }},
-        { Foreground = { Color = colors.grid_blue }},
+        { Foreground = { Color = colors.neon_blue }},
         { Text = ' ' .. SYMBOLS.GRID .. ' ' },
         { Foreground = { Color = colors.neon_magenta }},
         { Text = battery },
@@ -282,5 +285,33 @@ end
 
 config.default_prog = { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
 config.default_cwd = wezterm.home_dir
+
+-- Environment-specific configuration example
+if os.getenv("WEZTERM_ENV") == "work" then
+    config.font_size = 12
+else
+    config.font_size = 11
+end
+
+-- Function to switch themes based on time
+local function set_theme_based_on_time()
+    local hour = tonumber(wezterm.strftime('%H'))
+    if hour >= 7 and hour < 19 then
+        config.colors = {
+            foreground = colors.text_color,
+            background = colors.dark_bg,
+            -- ... other day theme settings ...
+        }
+    else
+        config.colors = {
+            foreground = colors.neon_cyan,
+            background = colors.cyber_void,
+            -- ... other night theme settings ...
+        }
+    end
+end
+
+-- Call the function to set the theme
+set_theme_based_on_time()
 
 return config
