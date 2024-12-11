@@ -265,7 +265,29 @@ config.keys = {
     { action = wezterm.action.ActivatePaneDirection 'Right', mods = 'CTRL|SHIFT', key = 'l' },
     { action = wezterm.action.ActivatePaneDirection 'Up', mods = 'CTRL|SHIFT', key = 'k' },
     { action = wezterm.action.ActivatePaneDirection 'Down', mods = 'CTRL|SHIFT', key = 'j' },
-
+    
+    -- Quick split controls (faster than Alt+Shift)
+    { key = '\\', mods = 'ALT', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+    { key = '-', mods = 'ALT', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
+    
+    -- Fast pane navigation with Alt + hjkl (vim style)
+    { key = 'h', mods = 'ALT', action = wezterm.action.ActivatePaneDirection 'Left' },
+    { key = 'l', mods = 'ALT', action = wezterm.action.ActivatePaneDirection 'Right' },
+    { key = 'k', mods = 'ALT', action = wezterm.action.ActivatePaneDirection 'Up' },
+    { key = 'j', mods = 'ALT', action = wezterm.action.ActivatePaneDirection 'Down' },
+    
+    -- Quick pane closing
+    { key = 'q', mods = 'ALT', action = wezterm.action.CloseCurrentPane { confirm = false } },
+    
+    -- Fast pane resizing with Alt + number keys
+    { key = '1', mods = 'ALT', action = wezterm.action.AdjustPaneSize { 'Left', 3 } },
+    { key = '2', mods = 'ALT', action = wezterm.action.AdjustPaneSize { 'Down', 3 } },
+    { key = '3', mods = 'ALT', action = wezterm.action.AdjustPaneSize { 'Up', 3 } },
+    { key = '4', mods = 'ALT', action = wezterm.action.AdjustPaneSize { 'Right', 3 } },
+    
+    -- Quick pane zooming
+    { key = 'z', mods = 'ALT', action = wezterm.action.TogglePaneZoomState },
+    
     -- Launch PowerShell Preview
     { action = wezterm.action.SpawnCommandInNewTab { args = { 'pwsh-preview' } }, mods = 'CTRL|SHIFT', key = 'P' },
 }
