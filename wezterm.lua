@@ -139,12 +139,12 @@ config.force_reverse_video_cursor = true
 
 -- Tab bar settings
 config.enable_tab_bar = true
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 config.use_fancy_tab_bar = true
 config.tab_max_width = 25
 config.show_tab_index_in_tab_bar = false
 config.switch_to_last_active_tab_when_closing_tab = true
-config.tab_bar_at_bottom = true
+config.tab_bar_at_bottom = false
 config.show_new_tab_button_in_tab_bar = true
 
 -- Tab bar style
