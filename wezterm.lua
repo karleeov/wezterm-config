@@ -96,8 +96,6 @@ config.front_end = 'WebGpu'
 config.webgpu_power_preference = 'HighPerformance'
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
-config.enable_kitty_keyboard = true
-config.enable_csi_u_key_encoding = true
 config.term = 'wezterm'
 
 -- Font configuration
