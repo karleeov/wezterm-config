@@ -92,17 +92,23 @@ end)
 -- Performance settings
 config.animation_fps = 60
 config.max_fps = 120
-config.front_end = 'WebGpu'
-config.webgpu_power_preference = 'HighPerformance'
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+    config.front_end = "WebGpu"
+    config.webgpu_power_preference = "HighPerformance"
+else
+    config.front_end = "Software"
+end
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
 config.term = 'wezterm'
 
--- Font configuration
+-- Font configuration with better Unicode support
 config.font = wezterm.font_with_fallback({
     { family = "JetBrainsMono Nerd Font", weight = "Medium", harfbuzz_features = {"calt=1", "clig=1", "liga=1"} },
     { family = "Fira Code", weight = "Medium" },
     { family = "Segoe UI", weight = "Medium" },
+    "Noto Color Emoji",
+    "Symbols Nerd Font",
 })
 config.font_size = 11
 config.line_height = 1.2
@@ -222,6 +228,105 @@ config.colors = {
     },
 }
 
+-- Function to switch themes based on time
+local function set_theme_based_on_time()
+    local hour = tonumber(wezterm.strftime('%H'))
+    if hour >= 7 and hour < 19 then
+        -- Day theme
+        config.colors = {
+            foreground = colors.text_color,
+            background = colors.dark_bg,
+            cursor_bg = colors.neon_magenta,
+            cursor_fg = colors.cyber_black,
+            cursor_border = colors.neon_blue,
+            selection_fg = colors.cyber_black,
+            selection_bg = colors.neon_cyan,
+            
+            ansi = {
+                colors.cyber_black,
+                colors.neon_blood,
+                colors.matrix_green,
+                colors.neon_yellow,
+                colors.grid_blue,
+                colors.neon_magenta,
+                colors.neon_cyan,
+                '#FFFFFF',
+            },
+            
+            brights = {
+                colors.dark_purple,
+                colors.cyber_red,
+                colors.neon_lime,
+                colors.neon_yellow,
+                colors.grid_blue,
+                colors.highlight_pink,
+                colors.cyber_teal,
+                '#FFFFFF',
+            },
+            
+            tab_bar = {
+                background = colors.cyber_void,
+                active_tab = {
+                    bg_color = colors.dark_purple,
+                    fg_color = colors.neon_cyan,
+                },
+                inactive_tab = {
+                    bg_color = colors.cyber_black,
+                    fg_color = colors.grid_blue,
+                },
+            },
+        }
+    else
+        -- Night theme with darker background and more vibrant colors
+        config.colors = {
+            foreground = colors.neon_cyan,
+            background = colors.cyber_void,
+            cursor_bg = colors.neon_pink,
+            cursor_fg = colors.cyber_black,
+            cursor_border = colors.neon_magenta,
+            selection_fg = colors.cyber_black,
+            selection_bg = colors.neon_purple,
+            
+            ansi = {
+                colors.cyber_black,
+                colors.cyber_red,
+                colors.matrix_green,
+                colors.neon_orange,
+                colors.neon_blue,
+                colors.neon_magenta,
+                colors.cyber_teal,
+                '#FFFFFF',
+            },
+            
+            brights = {
+                colors.dark_purple,
+                colors.neon_blood,
+                colors.neon_lime,
+                colors.neon_yellow,
+                colors.grid_blue,
+                colors.highlight_pink,
+                colors.neon_cyan,
+                '#FFFFFF',
+            },
+            
+            tab_bar = {
+                background = colors.cyber_void,
+                active_tab = {
+                    bg_color = colors.cyber_purple,
+                    fg_color = colors.neon_cyan,
+                },
+                inactive_tab = {
+                    bg_color = colors.cyber_black,
+                    fg_color = colors.neon_blue,
+                },
+            },
+        }
+    end
+end
+
+-- Call the function to set the theme
+set_theme_based_on_time()
+
 -- Key bindings
 config.keys = {
     -- Copy/Paste with Ctrl+C/Ctrl+V
@@ -318,26 +423,5 @@ if os.getenv("WEZTERM_ENV") == "work" then
 else
     config.font_size = 11
 end
-
--- Function to switch themes based on time
-local function set_theme_based_on_time()
-    local hour = tonumber(wezterm.strftime('%H'))
-    if hour >= 7 and hour < 19 then
-        config.colors = {
-            foreground = colors.text_color,
-            background = colors.dark_bg,
-            -- ... other day theme settings ...
-        }
-    else
-        config.colors = {
-            foreground = colors.neon_cyan,
-            background = colors.cyber_void,
-            -- ... other night theme settings ...
-        }
-    end
-end
-
--- Call the function to set the theme
-set_theme_based_on_time()
 
 return config
