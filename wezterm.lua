@@ -68,15 +68,31 @@ local function get_battery_info()
     return ''
 end
 
+-- System resource monitoring function
+local function get_system_info()
+    local success_cpu, cpu = pcall(wezterm.run_child_process, {"wmic", "cpu", "get", "loadpercentage"})
+    local cpu_usage = success_cpu and string.match(cpu, "%d+") or "N/A"
+    local success_mem, mem = pcall(wezterm.run_child_process, {"wmic", "OS", "get", "FreePhysicalMemory,TotalVisibleMemorySize"})
+    local total_mem = success_mem and string.match(mem, "(%d+)%s+(%d+)") or "N/A"
+    local free_mem = success_mem and string.match(mem, "(%d+)") or "N/A"
+    
+    if success_mem and success_cpu then
+        local used_mem_percent = math.floor((1 - (tonumber(free_mem) / tonumber(total_mem))) * 100)
+        return string.format('%s %d%% %s %d%%', SYMBOLS.CPU, tonumber(cpu_usage), SYMBOLS.RAM, used_mem_percent)
+    end
+    return ''
+end
+
 -- Event handler for status bar with improved contrast
 wezterm.on('update-right-status', function(window, pane)
     local date = wezterm.strftime('%H:%M')
     local battery = get_battery_info()
+    local sys_info = get_system_info()
     
     window:set_right_status(wezterm.format({
         { Background = { Color = colors.cyber_void }},
         { Foreground = { Color = colors.neon_blue }},
-        { Text = ' ' .. SYMBOLS.GRID .. ' ' },
+        { Text = ' ' .. sys_info .. ' ' },
         { Foreground = { Color = colors.neon_magenta }},
         { Text = battery },
         { Foreground = { Color = colors.neon_cyan }},
@@ -101,6 +117,12 @@ end
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
 config.term = 'wezterm'
+
+-- Performance and GPU optimizations
+config.webgpu_preferred_adapter = wezterm.gui.enumerate_gpus()[1]
+config.animation_fps = 60
+config.max_fps = 120
+config.enable_wayland = false
 
 -- Font configuration with better Unicode support
 config.font = wezterm.font_with_fallback({
@@ -393,6 +415,77 @@ config.keys = {
     
     -- Launch PowerShell Preview
     { action = wezterm.action.SpawnCommandInNewTab { args = { 'pwsh-preview' } }, mods = 'CTRL|SHIFT', key = 'P' },
+}
+
+-- Mouse configuration
+config.mouse_bindings = {
+    -- Right click paste
+    {
+        event = { Down = { streak = 1, button = "Right" } },
+        mods = "NONE",
+        action = wezterm.action.PasteFrom 'Clipboard',
+    },
+    -- Double-click select word
+    {
+        event = { Down = { streak = 2, button = "Left" } },
+        mods = "NONE",
+        action = wezterm.action.SelectTextAtMouseCursor "Word",
+    },
+    -- Triple-click select line
+    {
+        event = { Down = { streak = 3, button = "Left" } },
+        mods = "NONE",
+        action = wezterm.action.SelectTextAtMouseCursor "Line",
+    },
+}
+
+-- Hyperlink configuration
+config.hyperlink_rules = {
+    -- URL with standard protocols
+    {
+        regex = [[["]?(https?://\S+)["]?]],
+        format = "$1",
+        highlight = 1,
+    },
+    -- File paths
+    {
+        regex = [[["]?([\w\d.-]+/[\w\d.-/]+)["]?]],
+        format = "$1",
+        highlight = 1,
+    },
+    -- Line numbers in stack traces
+    {
+        regex = [[:(\d+)]],
+        format = "$1",
+        highlight = 1,
+    },
+}
+
+-- Quick directory switching
+local quick_dirs = {
+    -- Add your frequently used directories here
+    projects = wezterm.home_dir .. "/Projects",
+    downloads = wezterm.home_dir .. "/Downloads",
+    documents = wezterm.home_dir .. "/Documents",
+    config = wezterm.home_dir .. "/.config",
+}
+
+-- Add quick directory switching keys
+for dir_name, dir_path in pairs(quick_dirs) do
+    table.insert(config.keys, {
+        key = string.upper(string.sub(dir_name, 1, 1)),
+        mods = "ALT|SHIFT",
+        action = wezterm.action.SendString("cd " .. dir_path .. "\r"),
+    })
+end
+
+-- Search and selection configuration
+config.quick_select_patterns = {
+    -- Add patterns for quick text selection
+    [[\b\w+@[\w-]+\.\w+\b]], -- email addresses
+    [[\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b]], -- IPv4 addresses
+    [[\b[0-9a-f]{7,40}\b]], -- Git hashes
+    [[\b\d+\b]], -- Numbers
 }
 
 -- Default shell configuration
