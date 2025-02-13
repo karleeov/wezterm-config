@@ -96,7 +96,7 @@ config.front_end = 'WebGpu'
 config.webgpu_power_preference = 'HighPerformance'
 config.enable_scroll_bar = true
 config.scrollback_lines = 10000
-config.term = 'wezterm'
+config.term = 'xterm'
 
 -- Font configuration
 config.font = wezterm.font_with_fallback({
@@ -289,6 +289,8 @@ config.keys = {
     -- Launch PowerShell Preview
     { action = wezterm.action.SpawnCommandInNewTab { args = { 'pwsh-preview' } }, mods = 'CTRL|SHIFT', key = 'P' },
 }
+
+
 
 -- Default shell configuration
 local function get_shell()
