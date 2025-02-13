@@ -106,31 +106,21 @@ wezterm.on('update-right-status', function(window, pane)
 end)
 
 -- Performance settings
+config.front_end = 'WebGpu'
+config.webgpu_power_preference = 'HighPerformance'
 config.animation_fps = 60
 config.max_fps = 120
-if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-    config.front_end = "WebGpu"
-    config.webgpu_power_preference = "HighPerformance"
-else
-    config.front_end = "Software"
-end
-config.enable_scroll_bar = true
-config.scrollback_lines = 10000
+config.scrollback_lines = 5000
+config.enable_scroll_bar = false
 config.term = 'xterm'
 
 -- Performance and GPU optimizations
 config.webgpu_preferred_adapter = wezterm.gui.enumerate_gpus()[1]
-config.animation_fps = 60
-config.max_fps = 120
 config.enable_wayland = false
 
--- Font configuration with better Unicode support
+-- Font configuration with minimal fallbacks
 config.font = wezterm.font_with_fallback({
-    { family = "JetBrainsMono Nerd Font", weight = "Medium", harfbuzz_features = {"calt=1", "clig=1", "liga=1"} },
-    { family = "Fira Code", weight = "Medium" },
-    { family = "Segoe UI", weight = "Medium" },
-    "Noto Color Emoji",
-    "Symbols Nerd Font",
+    { family = "JetBrainsMono Nerd Font", weight = "Medium" },
 })
 config.font_size = 11
 config.line_height = 1.2
@@ -419,20 +409,10 @@ config.keys = {
 
 -- Default shell configuration
 local function get_shell()
-    -- Check if WSL and Arch are available
     local success, _ = wezterm.run_child_process({"wsl.exe", "--distribution", "Arch", "which", "zsh"})
     if success then
         return { 'wsl.exe', '--distribution', 'Arch', '--exec', '/bin/zsh' }
     end
-    
-    -- Fall back to PowerShell 7 if available
-    local pwsh_path = 'C:/Program Files/PowerShell/7/pwsh.exe'
-    success, _ = wezterm.run_child_process({"cmd.exe", "/c", "where", pwsh_path})
-    if success then
-        return { pwsh_path }
-    end
-    
-    -- Ultimate fallback to Windows PowerShell
     return { 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe' }
 end
 
